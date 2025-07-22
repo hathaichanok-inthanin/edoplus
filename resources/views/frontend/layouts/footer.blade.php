@@ -1,3 +1,11 @@
+<style>
+    .text-gradient {
+        background-image: linear-gradient(90deg, #0864a1, #3cb4f0);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        display: inline-block;
+    }
+</style>
 <footer id="footer" class="footer dark-background">
 
     <div class="footer-top">
@@ -25,13 +33,19 @@
                         <li><a href="{{ url('rewards') }}">REWARD</a></li>
                         <li><a href="{{ url('alliance') }}">สิทธิประโยชน์สมาชิก</a></li>
                         @if (Auth::guard('member')->user() == null)
-                            <li><a href="{{ url('member/login') }}">เข้าสู่ระบบสมาชิก</a></li>
+                            <li><a class="text-gradient" href="{{ url('member/login') }}">เข้าสู่ระบบสมาชิก</a></li>
                         @endif
 
                         @auth('member')
-                            <li>
-                                <a href="{{ url('member/profile') }}">บัญชีสมาชิก</a>
-                            </li>
+                            @if (Auth::guard('member')->user()->invitation != null)
+                                <li>
+                                    <a class="text-gradient" href="{{ url('member/profile') }}">Edo Invitation Only</a>
+                                </li>
+                            @else
+                                <li>
+                                    <a class="text-gradient" href="{{ url('member/profile') }}">บัญชีสมาชิก</a>
+                                </li>
+                            @endif
                         @endauth
                     </ul>
                 </div>
