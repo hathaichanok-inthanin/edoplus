@@ -54,7 +54,7 @@
 @section('content')
     @php
         $date_now = Carbon\Carbon::now();
-        $count_member = number_format(DB::table('members')->count());
+        $count_member = number_format(DB::table('members')->where('invitation', null)->count());
 
         $memberCounts = DB::table(
             DB::raw("(  
@@ -120,6 +120,7 @@
                         $member_new = count(
                             DB::table('members')
                                 ->where('created_at', '>', now()->subDays(30)->endOfDay())
+                                ->where('invitation', null)
                                 ->get(),
                         );
                         $member_use_service = count(DB::table('points')->groupBy('member_id')->get());

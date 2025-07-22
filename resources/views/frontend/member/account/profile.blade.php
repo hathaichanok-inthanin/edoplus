@@ -22,6 +22,13 @@
     .card-profile h3 {
         color: #777777;
     }
+
+    .text-gradient {
+        background-image: linear-gradient(90deg, #0864a1, #3cb4f0);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        display: inline-block;
+    }
 </style>
 @section('content')
     @php
@@ -84,7 +91,7 @@
     @php
         $point_balance = $sumpoint - $redeem_reward_point - $redeem_point_sum;
     @endphp
-
+    {{-- สมาชิก invitation หน้าจอคอม --}}
     @if (Auth::guard('member')->user()->invitation != null)
         <div class="container" id="desktop" style="margin-top: 10rem;">
             <div class="row">
@@ -129,11 +136,12 @@
                                         {{ $member->bday }}</h5>
                                 </div>
                                 <div class="col-md-5">
-                                    <h4 style="font-size: 20px;">Edo Invitation Only</h4>
+                                    <h4 style="font-size: 20px;" class="text-gradient">Edo Invitation Only</h4>
                                     <h4 style="font-size: 20px;">{{ $member->invitation }} บาท</h4>
                                     <h4 class="mb-1">ยอดเงินคงเหลือใน Wallet <i class="fa fa-caret-down"
-                                            style="color:#777777;"></i><br><span
-                                            style="font-size:22px;">{{ $total_balance }}</span> บาท</h4>
+                                            style="color:#777777;"></i><br><span style="font-size:18px;"
+                                            class="btn btn-info btn-sm mt-3 text-gradient">{{ $total_balance }} บาท</span>
+                                    </h4>
 
                                 </div>
                             </div>
@@ -143,6 +151,7 @@
                 <div class="col-md-2"></div>
             </div>
         </div>
+        {{-- จบ สมาชิก invitation หน้าจอคอม --}}
     @else
         <div class="container" id="desktop" style="margin-top: 10rem;">
             <div class="row">
@@ -161,6 +170,13 @@
                                             ->where('created_at', '>', now()->subDays(30)->endOfDay())
                                             ->get(),
                                     );
+
+                                    // min_price, max_price ระดับสมาชิก
+                                    $min_price_silver = DB::table('tiers')->where('tier', 'SILVER')->value('min_price');
+                                    $max_price_silver = DB::table('tiers')->where('tier', 'SILVER')->value('max_price');
+                                    $min_price_gold = DB::table('tiers')->where('tier', 'GOLD')->value('min_price');
+                                    $max_price_gold = DB::table('tiers')->where('tier', 'GOLD')->value('max_price');
+                                    $min_price_black = DB::table('tiers')->where('tier', 'BLACK')->value('min_price');
                                 @endphp
                                 <div class="col-md-5" style="border-right: 2px dashed #9e9e9e;">
 
@@ -182,6 +198,19 @@
                                     <h4>คุณ{{ $member->name }} {{ $member->surname }}</h4>
                                 </div>
                                 <div class="col-md-5">
+                                    @if ($sumprice == $min_price_silver || $sumprice < $max_price_silver)
+                                        <h5 class="mb-1 btn btn-info btn-sm text-gradient">ระดับสมาชิก <i
+                                                class="fa fa-caret-right" style="color:#777777;"></i>
+                                            SILVER</h5>
+                                    @elseif($sumprice == $min_price_gold || $sumprice < $max_price_gold)
+                                        <h5 class="mb-1 btn btn-info btn-sm text-gradient">ระดับสมาชิก <i
+                                                class="fa fa-caret-right" style="color:#777777;"></i>
+                                            GOLD</h5>
+                                    @elseif($sumprice > $min_price_black)
+                                        <h5 class="mb-1 btn btn-info btn-sm text-gradient">ระดับสมาชิก <i
+                                                class="fa fa-caret-right" style="color:#777777;"></i>
+                                            BLACK</h5>
+                                    @endif
                                     <h4 class="mb-1">พอยท์คงเหลือ <i class="fa fa-caret-down"
                                             style="color:#777777;"></i><br><span
                                             style="font-size:22px;">{{ $point_balance }}</span> พอยท์</h4>
@@ -200,6 +229,7 @@
         </div>
     @endif
 
+    {{-- สมาชิก invitation หน้าจอมือถือ --}}
     @if (Auth::guard('member')->user()->invitation != null)
         <div class="container" id="mobile" style="display:none;">
             <div class="card z-index-2">
@@ -250,11 +280,13 @@
                             <div class="container" style="text-align: center;">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <h4 style="font-size: 20px;">Edo Invitation Only</h4>
+                                        <h4 style="font-size: 20px;" class="text-gradient">Edo Invitation Only</h4>
                                         <h4 style="font-size: 20px;">{{ $member->invitation }} บาท</h4>
                                         <h4 class="mb-1">ยอดเงินคงเหลือใน Wallet <i class="fa fa-caret-down"
-                                                style="color:#777777;"></i><br><span
-                                                style="font-size:22px;">{{ $total_balance }}</span> บาท</h4>
+                                                style="color:#777777;"></i><br><span style="font-size:22px;"
+                                                class="btn btn-info btn-sm mt-3 text-gradient">{{ $total_balance }}
+                                                บาท</span>
+                                        </h4>
 
                                     </div>
                                 </div>
@@ -264,6 +296,7 @@
                 </div>
             </div>
         </div>
+        {{-- จบ สมาชิก invitation หน้าจอมือถือ --}}
     @else
         <div class="container" id="mobile" style="display:none;">
             <div class="card z-index-2">
@@ -280,6 +313,12 @@
                                     ->where('created_at', '>', now()->subDays(30)->endOfDay())
                                     ->get(),
                             );
+                            // min_price, max_price ระดับสมาชิก
+                            $min_price_silver = DB::table('tiers')->where('tier', 'SILVER')->value('min_price');
+                            $max_price_silver = DB::table('tiers')->where('tier', 'SILVER')->value('max_price');
+                            $min_price_gold = DB::table('tiers')->where('tier', 'GOLD')->value('min_price');
+                            $max_price_gold = DB::table('tiers')->where('tier', 'GOLD')->value('max_price');
+                            $min_price_black = DB::table('tiers')->where('tier', 'BLACK')->value('min_price');
                         @endphp
                         <div class="col-md-12">
                             <div class="d-flex align-items-center justify-content-center" style="gap: 10px;">
@@ -306,9 +345,22 @@
                             </div>
                         </div>
                         <div class="col-md-5">
-                            <div class="container mt-3" style="text-align: center;">
+                            <div class="container" style="text-align: center;">
                                 <div class="row">
                                     <div class="col-md-12">
+                                        @if ($sumprice == $min_price_silver || $sumprice < $max_price_silver)
+                                            <h5 class="mb-1 btn btn-info btn-sm text-gradient">ระดับสมาชิก <i
+                                                    class="fa fa-caret-right" style="color:#777777;"></i>
+                                                SILVER</h5>
+                                        @elseif($sumprice == $min_price_gold || $sumprice < $max_price_gold)
+                                            <h5 class="mb-1 btn btn-info btn-sm text-gradient">ระดับสมาชิก <i
+                                                    class="fa fa-caret-right" style="color:#777777;"></i>
+                                                GOLD</h5>
+                                        @elseif($sumprice > $min_price_black)
+                                            <h5 class="mb-1 btn btn-info btn-sm text-gradient">ระดับสมาชิก <i
+                                                    class="fa fa-caret-right" style="color:#777777;"></i>
+                                                BLACK</h5>
+                                        @endif
                                         <h4 class="mb-1">พอยท์คงเหลือ <i class="fa fa-caret-right"
                                                 style="color:#777777;"></i><span style="font-size:22px;">
                                                 {{ $point_balance }}</span> พอยท์</h4>
