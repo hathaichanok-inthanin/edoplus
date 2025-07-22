@@ -1,0 +1,57 @@
+
+  input[type="checkbox"] {
+    display: none;
+    appearance: none;
+  }
+  .accordion-item {
+    padding: 1em;
+    background-color: #ffffff;
+    border-radius: 0.5em;
+  }
+  .accordion-item:not(:last-child) {
+    margin-bottom: 1em;
+  }
+  .accordion-content {
+    color: #606060;
+    font-size: 0.8em;
+    line-height: 1.8em;
+    margin-left: 30px;
+  }
+
+  .accordion-content h5{
+    color: #000000;
+    line-height: 1.8em;
+  }
+
+  label {
+    font-size: 18px;
+    display: flex;
+    justify-content: space-between;
+    color: #000000;
+    cursor: pointer;
+    font-weight: 500;
+    padding: 5px 0;
+    margin-bottom: 0 !important;
+  }
+  input[type="checkbox"] ~ label .arrow {
+    display: inline-block;
+    transition: 1s;
+  }
+  
+  input[type="checkbox"]:checked ~ label .arrow {
+    transform: rotate(90deg);
+  }
+  input[type="checkbox"]:checked ~ label {
+    color: #000000;
+  }
+  input[type="checkbox"] ~ .accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: 1s;
+  }
+  input[type="checkbox"]:checked ~ .accordion-content {
+    max-height: 100vh;
+  
+    transition: 1s;
+  }
+  
