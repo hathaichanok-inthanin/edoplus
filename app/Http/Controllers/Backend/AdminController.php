@@ -1397,10 +1397,11 @@ class AdminController extends Controller
     
     public function rules_addPoint() {
         return [
-            'bill_number' => 'required|unique:points',
+            // 'bill_number' => 'required|unique:points',
+            'bill_number' => 'required',
             'price' => 'required',
-            'file' => 'nullable|array',
-            'file.*' => 'mimes:jpg,jpeg,png|max:2048',
+            // 'file' => 'nullable|array',
+            'file.*' => 'mimes:jpg,jpeg,png',
         ];
     }
 
