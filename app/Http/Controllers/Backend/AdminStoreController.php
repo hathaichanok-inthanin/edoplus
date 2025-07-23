@@ -189,7 +189,9 @@ class AdminStoreController extends Controller
     // Edo Invitation Only
     public function manageInvitationBalance() {
         $search = 'No Search';
-        return view('backend/adminStore/invitation/manage-invitation-balance')->with('search',$search);
+        $balances = 'No';
+        return view('backend/adminStore/invitation/manage-invitation-balance')->with('search',$search)
+                                                                              ->with('balances',$balances);
     }
 
     public function searchInvitation(Request $request) {
@@ -203,10 +205,12 @@ class AdminStoreController extends Controller
         
         $member_id = Member::where('tel',$search)->value('id');
         $NUM_PAGE = 20;
+        $balances = InvitationBalance::where('member_id',$member_id)->paginate($NUM_PAGE);
         $page = $request->input('page');
         $page = ($page != null)?$page:1;
         return view('backend/adminStore/invitation/manage-invitation-balance')->with('members',$members)
                                                                               ->with('search',$search)
+                                                                              ->with('balances',$balances)
                                                                               ->with('NUM_PAGE',$NUM_PAGE)
                                                                               ->with('page',$page);
     }
@@ -215,6 +219,7 @@ class AdminStoreController extends Controller
         $validator = Validator::make($request->all(), $this->rules_deteleBalance(), $this->messages_deteleBalance());
         if($validator->passes()) {
             $invitation_balance = new InvitationBalance;
+            $invitation_balance->branch_id = $request->get('branch_id');
             $invitation_balance->member_id = $request->get('member_id');
             $invitation_balance->store_id = $request->get('store_id');
             $invitation_balance->type = $request->get('type');
@@ -244,11 +249,16 @@ class AdminStoreController extends Controller
         }
     }
 
+    public function invitationFileDetail($id) {
+        $balance = InvitationBalance::findOrFail($id);
+        return view('backend/adminStore/invitation/file-detail')->with('balance',$balance);
+    }
+
     public function rules_deteleBalance() {
         return [
             'balance' => 'required|numeric',
             'bill_number' => 'required',
-            'file.*' => 'mimes:jpg,jpeg,png|max:2048',
+            'file.*' => 'mimes:jpg,jpeg,png',
             'file' => 'required|array|min:1',
         ];
     }

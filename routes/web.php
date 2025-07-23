@@ -50,6 +50,7 @@ Route::group(['prefix' => 'member'], function(){
     Route::post('/profile-update','Frontend\MembersController@profileUpdate');
 
     Route::get('/profile','Frontend\MembersController@profile')->name('member.home');
+    Route::get('/invitation-file-detail/{id}','Frontend\MembersController@invitationFileDetail'); //ดูรายละเอียดหลักฐานการใช้บริการ
 
     // แลกของรางวัล
     Route::get('/reward-redeem/{id}','Frontend\RewardsController@rewardRedeem');
@@ -211,6 +212,7 @@ Route::group(['prefix' => '/'], function(){
     Route::get('add-balance/{id}','Backend\AdminController@addBalance'); //เพิ่มยอดเงิน
     Route::post('add-balance','Backend\AdminController@addBalancePost'); //เพิ่มยอดเงิน
     Route::post('delete-balance','Backend\AdminController@deleteBalancePost'); //ลบยอดเงิน
+    Route::get('invitation-file-detail/{id}','Backend\AdminController@invitationFileDetail'); //ดูรายละเอียดหลักฐานการใช้บริการ
 });
 
 // Admin ร้านค้า
@@ -247,6 +249,7 @@ Route::group(['prefix' => 'admin'], function(){
     Route::get('invitation/manage-balance','Backend\AdminStoreController@manageInvitationBalance'); //จัดการยอดเงิน
     Route::get('search-invitation','Backend\AdminStoreController@searchInvitation');
     Route::post('delete-balance','Backend\AdminStoreController@deleteBalancePost'); //ลบยอดเงิน
+    Route::get('invitation-file-detail/{id}','Backend\AdminStoreController@invitationFileDetail'); //ดูรายละเอียดหลักฐานการใช้บริการ
 });
 
 // Staff พนักงาน
@@ -282,6 +285,7 @@ Route::group(['prefix' => 'staff'], function(){
     Route::get('invitation/manage-balance','Backend\StaffController@manageInvitationBalance'); //จัดการยอดเงิน
     Route::get('search-invitation','Backend\StaffController@searchInvitation');
     Route::post('delete-balance','Backend\StaffController@deleteBalancePost'); //ลบยอดเงิน
+    Route::get('invitation-file-detail/{id}','Backend\StaffController@invitationFileDetail'); //ดูรายละเอียดหลักฐานการใช้บริการ
 });
 
 

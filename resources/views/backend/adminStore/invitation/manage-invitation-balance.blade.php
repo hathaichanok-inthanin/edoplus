@@ -223,7 +223,7 @@
                                                         @endif
                                                     </label>
                                                     <input type="file" name="file[]" class="form-control"
-                                                        accept=".jpg, .jpeg, .png" multiple/>
+                                                        accept=".jpg, .jpeg, .png" multiple />
                                                 </div>
                                             </div>
                                         </div>
@@ -244,6 +244,63 @@
                     @endif
                 </div>
                 <div class="col-lg-2 mt-4 mb-lg-0 mb-4"></div>
+            </div>
+            <div class="row">
+                @if ($balances != 'No')
+                    <div class="col-lg-12 mt-4 mb-lg-0 mb-4">
+                        <div class="card">
+                            <div class="card-header pb-0 pt-3 bg-transparent">
+                                <div class="table-responsive">
+                                    <table class="table align-items-center">
+                                        <thead class="thead-light">
+                                            <tr style="text-align: center;">
+                                                <th>ลำดับ</th>
+                                                <th>วันที่</th>
+                                                <th>สาขา</th>
+                                                <th>หมายเลขบิล</th>
+                                                <th>การจัดการ</th>
+                                                <th>จำนวนเงิน</th>
+                                                <th>หลักฐานการใช้บริการ</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="list">
+                                            @foreach ($balances as $balance => $value)
+                                                @php
+                                                    $store_name = DB::table('account_stores')
+                                                        ->where('id', $value->branch_id)
+                                                        ->value('store_name');
+                                                    $branch = DB::table('account_stores')
+                                                        ->where('id', $value->branch_id)
+                                                        ->value('branch');
+                                                @endphp
+                                                <tr style="text-align:center;">
+                                                    <td>{{ $NUM_PAGE * ($page - 1) + $balance + 1 }}</td>
+                                                    <td>{{ $value->date }}</td>
+                                                    <td>{{ $store_name }} {{ $branch }}</td>
+                                                    <td>{{ $value->bill_number }}</td>
+                                                    @if ($value->type == 'เพิ่มยอดเงิน')
+                                                        <td style="color: green;">{{ $value->type }}</td>
+                                                    @else
+                                                        <td style="color: red;">{{ $value->type }}</td>
+                                                    @endif
+                                                    <td>{{ number_format($value->balance) }}</td>
+                                                    <td>
+                                                        @if ($value->file != null)
+                                                            <a href="{{ url('admin/invitation-file-detail') }}/{{ $value->id }}"
+                                                                style="color:#0c6640;">
+                                                                <i class="fas fa-image" aria-hidden="true"></i>
+                                                            </a>
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
             </div>
         </div>
     </div>

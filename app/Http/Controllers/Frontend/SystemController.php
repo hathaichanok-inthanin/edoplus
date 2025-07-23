@@ -219,7 +219,7 @@ class SystemController extends Controller
     public function rules_register() {
         return [
             'serialnumber' => 'unique:members',
-            'card_id' => 'unique:members',
+            // 'card_id' => 'unique:members',
             'name' => 'required',
             'surname' => 'required',
             'bday' => 'required',
@@ -229,7 +229,7 @@ class SystemController extends Controller
 
     public function messages_register() {
         return [
-            'serialnumber.unique' => 'หมายเลขสมาชิกใช้ในการลงทะเบียนแล้ว',
+            // 'serialnumber.unique' => 'หมายเลขสมาชิกใช้ในการลงทะเบียนแล้ว',
             // 'card_id.required' => 'กรุณากรอกหมายเลขบัตรประชาชน',
             'card_id.unique' => 'หมายเลขบัตรประชาชนใช้ในการลงทะเบียนแล้ว',
             'name.required' => 'กรุณากรอกชื่อ',

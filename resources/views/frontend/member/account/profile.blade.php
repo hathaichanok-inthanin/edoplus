@@ -428,6 +428,66 @@
                 </div>
                 <div class="col-md-2"></div>
             </div>
+            <div class="row">
+                <div class="col-lg-2"></div>
+                <div class="col-lg-8 mt-4 mb-lg-0 mb-4">
+                    <div class="card">
+                        <div class="card-header pb-0 pt-3 bg-transparent">
+                            <div class="table-responsive">
+                                <table class="table align-items-center">
+                                    <thead class="thead-light">
+                                        <tr style="text-align: center;">
+                                            <th>ลำดับ</th>
+                                            <th>วันที่</th>
+                                            <th>สาขา</th>
+                                            <th>การจัดการ</th>
+                                            <th>จำนวนเงิน</th>
+                                            <th>หลักฐานการใช้บริการ</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="list">
+                                        @foreach ($balances as $balance => $value)
+                                            @php
+                                                // store_id
+                                                $store_name = DB::table('account_stores')
+                                                    ->where('id', $value->branch_id)
+                                                    ->value('store_name');
+                                                $branch = DB::table('account_stores')
+                                                    ->where('id', $value->branch_id)
+                                                    ->value('branch');
+                                            @endphp
+                                            <tr style="text-align:center;">
+                                                <td>{{ $NUM_PAGE * ($page - 1) + $balance + 1 }}</td>
+                                                <td>{{ $value->date }}</td>
+                                                @if ($value->branch_id != null)
+                                                    <td>{{ $store_name }} สาขา{{ $branch }}</td>
+                                                @else
+                                                    <td></td>
+                                                @endif
+                                                @if ($value->type == 'เพิ่มยอดเงิน')
+                                                    <td style="color: green;">{{ $value->type }}</td>
+                                                @else
+                                                    <td style="color: red;">{{ $value->type }}</td>
+                                                @endif
+                                                <td>{{ number_format($value->balance) }}</td>
+                                                <td>
+                                                    @if ($value->file != null)
+                                                        <a href="{{ url('member/invitation-file-detail') }}/{{ $value->id }}"
+                                                            style="color:#0c6640;">
+                                                            <i class="fas fa-image" aria-hidden="true"></i>
+                                                        </a>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2"></div>
+            </div>
         </div>
     @else
         <div class="container" style="text-align: center; margin-bottom:10rem;">

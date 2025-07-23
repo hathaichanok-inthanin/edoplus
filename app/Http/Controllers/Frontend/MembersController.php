@@ -10,6 +10,7 @@ use App\Model\RedeemReward;
 use App\Model\GetCoupon;
 use App\Model\Point;
 use App\Model\RedeemPoint;
+use App\Model\InvitationBalance;
 use App\PartnerShop;
 use Auth;
 use Validator;
@@ -20,7 +21,7 @@ class MembersController extends Controller
         $this->middleware('auth:member');
     }
     
-    public function profile() {
+    public function profile(Request $request) {
         $member = Member::where('id',Auth::guard('member')->id())->orderBy('id','desc')->first();
         $partners = PartnerShop::groupBy('name')->orderBy('id','desc')->get(); 
         $member_id = Auth::guard('member')->user()->id;
@@ -39,11 +40,20 @@ class MembersController extends Controller
                                     ->where('redeem_points.updated_at','>','2022-02-01 00:00:00')
                                     ->select('partner_shop_points.*','redeem_points.*')->orderBy('partner_shop_points.id','desc')->get();
 
+        // ประวัติการใช้บริการ
+        $NUM_PAGE = 20;
+        $balances = InvitationBalance::where('member_id',$member_id)->paginate($NUM_PAGE);
+        $page = $request->input('page');
+        $page = ($page != null)?$page:1;
+
         return view('frontend/member/account/profile')->with('member',$member)
                                                       ->with('partners',$partners)
                                                       ->with('redeem_rewards',$redeem_rewards)
                                                       ->with('points',$points)
-                                                      ->with('redeem_points',$redeem_points);
+                                                      ->with('redeem_points',$redeem_points)
+                                                      ->with('balances',$balances)
+                                                      ->with('NUM_PAGE',$NUM_PAGE)
+                                                      ->with('page',$page);
     }
 
     public function telChange(){
@@ -83,6 +93,11 @@ class MembersController extends Controller
         $member_id = Auth::guard('member')->user()->id;
         $coupons = GetCoupon::where('member_id',$member_id)->where('status','ยังไม่ใช้งาน')->get();
         return view('frontend/member/coupon/coupon')->with('coupons',$coupons);
+    }
+
+    public function invitationFileDetail($id) {
+        $balance = InvitationBalance::findOrFail($id);
+        return view('frontend/member/account/file-detail')->with('balance',$balance);
     }
 
     public function rules_tel_change() {

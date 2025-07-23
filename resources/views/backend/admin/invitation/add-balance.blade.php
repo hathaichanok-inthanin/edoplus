@@ -73,6 +73,8 @@
                                             <div class="col-md-12 mt-3">
                                                 <input type="hidden" name="type" value="เพิ่มยอดเงิน">
                                                 <input type="hidden" name="member_id" value="{{ $member_id }}">
+                                                <input type="hidden" name="admin_id"
+                                                    value="{{ Auth::guard('admin')->id() }}">
                                                 <input type="hidden" name="date" value="{{ $dateNow }}">
                                                 <button type="submit" class="btn btn-lg btn-success">เพิ่มยอดเงิน</button>
                                             </div>
