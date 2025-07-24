@@ -168,6 +168,7 @@
                                             <option value="{{$account_store->status}}">{{$account_store->status}}</option>
                                             <option value="เปิด">เปิด</option>
                                             <option value="ปิด">ปิด</option>
+                                            <option value="ไม่แสดง">ไม่แสดง</option>
                                         </select> 
                                     </div>
                                 </div>

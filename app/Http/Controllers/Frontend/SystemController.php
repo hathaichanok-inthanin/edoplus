@@ -141,7 +141,7 @@ class SystemController extends Controller
                                          ->where('partner_shop_promotions.status','=','เปิด')
                                          ->select('partner_shops.*','partner_shop_promotions.*')->paginate('6');
         $partners = PartnerShop::groupBy('name')->orderBy('id','desc')->get(); 
-        $account_stores = AccountStore::groupBy('store_name')->orderBy('id','asc')->get(); 
+        $account_stores = AccountStore::groupBy('store_name')->orderBy('id','asc')->where('status','เปิด')->get(); 
         return view('frontend/system/alliance/index')->with('partners',$partners)
                                                      ->with('partner_promotions',$partner_promotions)
                                                      ->with('account_stores',$account_stores);
@@ -198,14 +198,14 @@ class SystemController extends Controller
     }
 
     public function aboutUs() {
-        $account_stores = AccountStore::groupBy('store_name')->orderBy('id','asc')->get(); 
+        $account_stores = AccountStore::groupBy('store_name')->orderBy('id','asc')->where('status','เปิด')->get(); 
         $partners = PartnerShop::groupBy('name')->orderBy('id','desc')->get(); 
         return view('frontend/system/about-us')->with('account_stores',$account_stores)
                                                ->with('partners',$partners);
     }
 
     public function helpCenter() {
-        $account_stores = AccountStore::groupBy('store_name')->orderBy('id','asc')->get(); 
+        $account_stores = AccountStore::groupBy('store_name')->orderBy('id','asc')->where('status','เปิด')->get(); 
         $partners = PartnerShop::groupBy('name')->orderBy('id','desc')->get(); 
         return view('frontend/system/help-center')->with('account_stores',$account_stores)
                                                   ->with('partners',$partners);

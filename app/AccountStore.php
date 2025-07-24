@@ -11,7 +11,7 @@ class AccountStore extends Authenticatable
 	protected $table = 'account_stores';
 
 	protected $fillable = [
-    	'id', 'store_name', 'tel', 'username', 'password', 'branch', 'image'
+    	'id', 'store_name', 'tel', 'username', 'password', 'branch', 'image', 'status'
     ];
 
     protected $primaryKey = 'id';

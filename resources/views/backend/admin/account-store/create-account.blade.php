@@ -171,6 +171,14 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-md-12 mt-2">
+                                    <p>สถานะ</p>
+                                    <select name="status" class="form-control">
+                                        <option value="เปิด">เปิด</option>
+                                        <option value="ปิด">ปิด</option>
+                                        <option value="ไม่แสดง">ไม่แสดง</option>
+                                    </select>
+                                </div>
                                 <div class="row">
                                     <div class="col-md-12 mt-3">
                                         <button type="submit" class="btn btn-lg btn-success">สร้างร้านค้า</button>
