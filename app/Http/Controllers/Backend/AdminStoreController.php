@@ -226,6 +226,7 @@ class AdminStoreController extends Controller
             $invitation_balance->balance = $request->get('balance');
             $invitation_balance->bill_number = $request->get('bill_number');
             $invitation_balance->date = Carbon::now()->format('d/m/Y');
+            $invitation_balance->service_date = $request->get('service_date');
 
             if($request->hasFile('file')) {
                 $files = $request->file('file');

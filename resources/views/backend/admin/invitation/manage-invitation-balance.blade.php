@@ -192,6 +192,15 @@
                                                     </select>
                                                 </div>
                                                 <div class="col-md-12 mb-3">
+                                                    <label class="form-label">วันที่ใช้บริการ
+                                                        @if ($errors->has('service_date'))
+                                                            <span class="text-danger"
+                                                                style="font-size: 15px;">({{ $errors->first('service_date') }})</span>
+                                                        @endif
+                                                    </label>
+                                                    <input type="date" id="service_date" name="service_date" class="form-control" placeholder="dd/mm/yyyy"/>
+                                                </div>
+                                                <div class="col-md-12 mb-3">
                                                     <label class="form-label">หมายเลขบิล
                                                         @if ($errors->has('bill_number'))
                                                             <span class="text-danger"
@@ -251,7 +260,7 @@
                                         <thead class="thead-light">
                                             <tr style="text-align: center;">
                                                 <th>ลำดับ</th>
-                                                <th>วันที่</th>
+                                                <th>วันที่ใช้บริการ</th>
                                                 <th>สาขา</th>
                                                 <th>หมายเลขบิล</th>
                                                 <th>การจัดการ</th>
@@ -271,7 +280,7 @@
                                                 @endphp
                                                 <tr style="text-align:center;">
                                                     <td>{{ $NUM_PAGE * ($page - 1) + $balance + 1 }}</td>
-                                                    <td>{{ $value->date }}</td>
+                                                    <td>{{ $value->service_date }}</td>
                                                     <td>{{ $store_name }} {{ $branch }}</td>
                                                     <td>{{ $value->bill_number }}</td>
                                                     @if ($value->type == 'เพิ่มยอดเงิน')
@@ -304,6 +313,15 @@
 
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <script>
+        flatpickr("#service_date", {
+            dateFormat: "d/m/Y" // Format ที่คุณต้องการ
+        });
+    </script>
 
     <script>
         // number phone
