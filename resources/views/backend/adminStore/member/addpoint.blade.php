@@ -211,6 +211,16 @@
                                                     </select>
                                                 </div>
                                                 <div class="col-md-12 mb-3">
+                                                    <label class="form-label">วันที่ใช้บริการ
+                                                        @if ($errors->has('service_date'))
+                                                            <span class="text-danger"
+                                                                style="font-size: 15px;">({{ $errors->first('service_date') }})</span>
+                                                        @endif
+                                                    </label>
+                                                    <input type="date" id="service_date" name="service_date"
+                                                        class="form-control" placeholder="dd/mm/yyyy" />
+                                                </div>
+                                                <div class="col-md-12 mb-3">
                                                     <label class="form-label">หมายเลขรายการ
                                                         @if ($errors->has('bill_number'))
                                                             <span class="text-danger"
@@ -264,6 +274,16 @@
 
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <script>
+        flatpickr("#service_date", {
+            dateFormat: "d/m/Y" // Format ที่คุณต้องการ
+        });
+    </script>
+
     <script>
         // number phone
         function phoneFormatter() {

@@ -9,7 +9,7 @@ class Point extends Model
 	protected $table = 'points';
 
 	protected $fillable = [
-    	'member_id', 'branch_id', 'admin_id','staff_id', 'store_id', 'type', 'bill_number', 'date', 'price', 'file'
+    	'member_id', 'branch_id', 'admin_id','staff_id', 'store_id', 'type', 'bill_number', 'date', 'service_date', 'price', 'file'
     ];
 
     protected $primaryKey = 'id';

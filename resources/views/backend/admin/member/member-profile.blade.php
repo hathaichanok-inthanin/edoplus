@@ -324,7 +324,7 @@
                                         <thead class="thead-light">
                                             <tr style="text-align: center;">
                                                 <th>ลำดับ</th>
-                                                <th>วันที่</th>
+                                                <th>วันที่ใช้บริการ</th>
                                                 <th>สาขา</th>
                                                 <th>หมายเลขบิล</th>
                                                 <th>จำนวนเงิน</th>
@@ -343,7 +343,7 @@
                                                 @endphp
                                                 <tr style="text-align:center;">
                                                     <td>{{ $NUM_PAGE * ($page - 1) + $point + 1 }}</td>
-                                                    <td>{{ $value->date }}</td>
+                                                    <td>{{ $value->service_date }}</td>
                                                     <td>{{ $store_name }} {{ $branch }}</td>
                                                     <td>{{ $value->bill_number }}</td>
                                                     <td>{{ $value->price }}</td>

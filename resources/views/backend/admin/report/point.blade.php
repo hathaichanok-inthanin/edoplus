@@ -55,7 +55,7 @@
                                             <th>จำนวนพอยท์</th>
                                             <th>สาขาที่ทำรายการ</th>
                                             <th>ผู้ทำรายการ</th>
-                                            <th>วันที่ทำรายการ</th>
+                                            <th>วันที่ใช้บริการ</th>
                                         </tr>
                                     </thead>
                                     <tbody class="list" id="data-wrapper">
@@ -107,7 +107,7 @@
                                                         {{ $staff_name }}
                                                     @endif
                                                 </td>
-                                                <td>{{ $value->date }}</td>
+                                                <td>{{ $value->service_date }}</td>
                                             </tr>
                                         @endforeach
 
