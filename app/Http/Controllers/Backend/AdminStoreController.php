@@ -12,6 +12,7 @@ use App\Model\Point;
 use App\Model\Campaign;
 use App\Model\GetCoupon;
 use App\Model\InvitationBalance;
+use App\Model\BillConfirm;
 
 use Carbon\Carbon;
 use Auth;
@@ -255,6 +256,45 @@ class AdminStoreController extends Controller
         return view('backend/adminStore/invitation/file-detail')->with('balance',$balance);
     }
 
+    public function editProfile(Request $request, $id) {
+        $member = Member::findOrFail($id);
+        return view('backend/adminStore/member/edit-profile')->with('member',$member);
+    }
+
+    public function editProfilePost(Request $request) {
+        $validator = Validator::make($request->all(), $this->rules_editProfile(), $this->messages_editProfile());
+        if($validator->passes()) {
+            $id = $request->get('id');
+            $member = Member::findOrFail($id);
+            $member->update($request->all());
+
+            $bill_confirm = new BillConfirm;
+            $bill_confirm->member_id = $request->get('id');
+            $bill_confirm->date = Carbon::now()->format('d/m/Y');
+
+            if($request->hasFile('bill')) {
+                $files = $request->file('bill');
+                $file_names = [];
+
+                foreach ($files as $file) {
+                    $filename = md5($file->getClientOriginalName() . time()) . "_o." . $file->getClientOriginalExtension();
+                    $file->move('files/bill_confirm/', $filename);
+                    $file_names[] = $filename;
+                }
+                $bill_confirm->bill = json_encode($file_names);
+            }
+
+            $bill_confirm->save();
+
+            $request->session()->flash('alert-success', 'แก้ไขโปรไฟล์สมาชิกสำเร็จ');
+            return redirect()->action('Backend\AdminStoreController@memberProfile',['id' => $id]);
+        }
+        else{
+            $request->session()->flash('alert-danger', 'แก้ไขโปรไฟล์สมาชิกไม่สำเร็จ กรุณาตรวจสอบข้อมูลอีกครั้ง');
+            return redirect()->action('Backend\AdminStoreController@editProfile',['id' => $request->get('id')])->withErrors($validator)->withInput();   
+        }
+    }
+
     public function rules_deteleBalance() {
         return [
             'balance' => 'required|numeric',
@@ -296,7 +336,7 @@ class AdminStoreController extends Controller
             'bill_number' => 'required|unique:points',
             'price' => 'required',
             'file' => 'nullable|array',
-            'file.*' => 'mimes:jpg,jpeg,png|max:2048',
+            'file.*' => 'mimes:jpg,jpeg,png',
         ];
     }
 
@@ -305,6 +345,24 @@ class AdminStoreController extends Controller
             'bill_number.required' => 'กรุณากรอกหมายเลขบิล',
             'bill_number.unique' => 'หมายเลขบิลซ้ำ',
             'price.required' => 'กรุณากรอกจำนวนเงิน',
+        ];
+    }
+
+    public function rules_editProfile() {
+        return [
+            'name' => 'required',
+            'surname' => 'required',
+            'bday' => 'required',
+            'tel' => 'required',
+        ];
+    }
+
+    public function messages_editProfile() {
+        return [
+            'name.required' => 'กรุณากรอกชื่อ',
+            'surname.required' => 'กรุณากรอกนามสกุล',
+            'bday.required' => 'กรุณากรอกวันเดือนปีเกิด',
+            'tel.required' => 'กรุณากรอกเบอร์โทรศัพท์',
         ];
     }
 }

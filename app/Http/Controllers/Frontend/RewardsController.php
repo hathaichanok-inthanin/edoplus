@@ -5,11 +5,11 @@ namespace App\Http\Controllers\Frontend;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-use App\model\Reward;
-use App\model\RedeemReward;
-use App\model\RedeemPoint;
-use App\model\Point;
-use App\model\RewardPoint;
+use App\Model\Reward;
+use App\Model\RedeemReward;
+use App\Model\RedeemPoint;
+use App\Model\Point;
+use App\Model\RewardPoint;
 use App\Member;
 use Auth;
 use Carbon\Carbon;

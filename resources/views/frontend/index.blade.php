@@ -178,7 +178,7 @@
             </div>
         </div>
     </div>
-    <div style="background-color: #000000; padding: 50px;">
+    <div style="background-color: #000000; padding-top: 50px;">
         <div class="container">
             <h1 style="font-size: 2rem;"><strong>ติดต่อเรา</strong></h1>
             <div class="row mt-3">

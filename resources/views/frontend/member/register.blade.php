@@ -99,7 +99,7 @@
                             <label for="tel">ยืนยันรหัสผ่านอีกครั้ง</label>
                         </div>
 
-                        <input type="hidden" name="status" value="ONLINE">
+                        <input type="hidden" name="status" value="รอยืนยัน">
                         <button type="submit">สมัครสมาชิกใหม่</button>
                     </form>
                 </div>

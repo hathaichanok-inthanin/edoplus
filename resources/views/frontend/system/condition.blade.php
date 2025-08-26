@@ -6,7 +6,7 @@
 </style>
 @section('content')
     <div style="background-color:#ffffff;">
-        <div class="container" style="background-color: #ffffff; padding: 5rem;">
+        <div class="container" style="background-color: #ffffff; padding-top: 5rem;">
             <div class="row">
                 <h1 class="text-center" style="font-weight: bold; font-size: 2rem; color:#000000;">ข้อกำหนดและเงื่อนไข
                     สำหรับสมาชิกเอโดะพลัส (EDO PLUS)

@@ -65,11 +65,15 @@
                     @foreach (['danger', 'warning', 'success', 'info'] as $msg)
                         @if (Session::has('alert-' . $msg))
                             <p class="alertdesign alert alert-{{ $msg }}">{{ Session::get('alert-' . $msg) }}</p>
-                        @endif
+                        @endif  
                     @endforeach
                     <div class="card z-index-2">
                         <div class="card-header pb-0 pt-3 bg-transparent">
                             <div class="row mb-4">
+                                <div class="col-md-12">
+                                    <a href="{{ url('admin/edit-profile') }}/{{ $member->id }}"><i class="ni ni-settings"
+                                            aria-hidden="true"></i> แก้ไขข้อมูล</a>
+                                </div>
                                 <div class="col-md-4">
                                     <center><img src="{{ url('assets/image/profile.png') }}" width="70%;"></center>
                                 </div>

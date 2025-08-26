@@ -227,6 +227,8 @@ Route::group(['prefix' => 'admin'], function(){
     // ข้อมูลสมาชิก
     Route::get('search-member-list','Backend\AdminStoreController@searchMemberList'); //ค้นหาข้อมูลสมาชิก
     Route::get('member/profile/{id}','Backend\AdminStoreController@memberProfile'); //หน้าโปรไฟล์สมาชิก
+    Route::get('edit-profile/{id}','Backend\AdminStoreController@editProfile'); //หน้าแก้ไขโปรไฟล์สมาชิก
+    Route::post('edit-profile','Backend\AdminStoreController@editProfilePost'); //แก้ไขโปรไฟล์สมาชิก
 
     // ข้อมูลคะแนนสะสม
     Route::get('addpoint','Backend\AdminStoreController@addpoint'); //หน้าเพิ่มคะแนนสะสม

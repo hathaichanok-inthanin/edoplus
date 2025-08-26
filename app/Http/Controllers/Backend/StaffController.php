@@ -316,7 +316,7 @@ class StaffController extends Controller
             'bill_number' => 'required|unique:points',
             'price' => 'required',
             'file' => 'nullable|array',
-            'file.*' => 'mimes:jpg,jpeg,png|max:2048',
+            'file.*' => 'mimes:jpg,jpeg,png',
         ];
     }
 
