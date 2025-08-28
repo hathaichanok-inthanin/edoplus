@@ -60,11 +60,11 @@ class AdminController extends Controller
                 // SILVER
                 $silver++;    
             }
-            elseif($groupMembers[$i] == 200001 || $groupMembers[$i] < 500001) {
+            elseif($groupMembers[$i] == 200001 || $groupMembers[$i] < 1000001) {
                 // GOLD
                 $gold++;
             }
-            elseif($groupMembers[$i] > 500001) {
+            elseif($groupMembers[$i] > 1000001) {
                 // BLACK
                 $black++;
             }            
@@ -382,7 +382,7 @@ class AdminController extends Controller
         }
 
         if($search == "GOLD") {
-            if($sumprice == 200001 || $sumprice < 500001) {
+            if($sumprice == 200001 || $sumprice < 1000001) {
                 $members = Member::join('points', 'members.id', '=', 'points.member_id')
                        ->select('members.*', 'points.price')
                        ->get();
@@ -392,7 +392,7 @@ class AdminController extends Controller
         }
         
         if($search == "BLACK") {
-            if($sumprice > 500001) {
+            if($sumprice > 1000001) {
                 $members = Member::join('points', 'members.id', '=', 'points.member_id')
                        ->select('members.*', 'points.price')
                        ->get();

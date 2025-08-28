@@ -61,8 +61,8 @@
                 SELECT members.id,  
                     CASE  
                         WHEN COALESCE(SUM(points.price), 0) BETWEEN 0 AND 200000 THEN 'SILVER'  
-                        WHEN COALESCE(SUM(points.price), 0) BETWEEN 200001 AND 500000 THEN 'GOLD'  
-                        WHEN COALESCE(SUM(points.price), 0) BETWEEN 500001 AND 100000000 THEN 'BLACK'  
+                        WHEN COALESCE(SUM(points.price), 0) BETWEEN 200001 AND 1000000 THEN 'GOLD'  
+                        WHEN COALESCE(SUM(points.price), 0) BETWEEN 1000001 AND 100000000 THEN 'BLACK'  
                         ELSE 'OTHER'  
                     END AS membership_level  
                 FROM members  
