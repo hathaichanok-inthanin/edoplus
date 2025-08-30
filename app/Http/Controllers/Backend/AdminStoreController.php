@@ -268,23 +268,25 @@ class AdminStoreController extends Controller
             $member = Member::findOrFail($id);
             $member->update($request->all());
 
-            $bill_confirm = new BillConfirm;
-            $bill_confirm->member_id = $request->get('id');
-            $bill_confirm->date = Carbon::now()->format('d/m/Y');
-
             if($request->hasFile('bill')) {
-                $files = $request->file('bill');
-                $file_names = [];
+                $bill_confirm = new BillConfirm;
+                $bill_confirm->member_id = $request->get('id');
+                $bill_confirm->date = Carbon::now()->format('d/m/Y');
 
-                foreach ($files as $file) {
-                    $filename = md5($file->getClientOriginalName() . time()) . "_o." . $file->getClientOriginalExtension();
-                    $file->move('files/bill_confirm/', $filename);
-                    $file_names[] = $filename;
+                if($request->hasFile('bill')) {
+                    $files = $request->file('bill');
+                    $file_names = [];
+
+                    foreach ($files as $file) {
+                        $filename = md5($file->getClientOriginalName() . time()) . "_o." . $file->getClientOriginalExtension();
+                        $file->move('files/bill_confirm/', $filename);
+                        $file_names[] = $filename;
+                    }
+                    $bill_confirm->bill = json_encode($file_names);
                 }
-                $bill_confirm->bill = json_encode($file_names);
-            }
 
-            $bill_confirm->save();
+                $bill_confirm->save();
+            }
 
             $request->session()->flash('alert-success', 'แก้ไขโปรไฟล์สมาชิกสำเร็จ');
             return redirect()->action('Backend\AdminStoreController@memberProfile',['id' => $id]);

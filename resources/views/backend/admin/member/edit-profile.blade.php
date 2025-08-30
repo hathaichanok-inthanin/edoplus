@@ -152,6 +152,18 @@
                                             <option value="วงเงิน 5,000,000">วงเงิน 5,000,000</option>
                                         </select>
                                     </div>
+                                    <div class="col-md-6 mt-2">
+                                        <p>
+                                            <span>*</span> หลักฐานใบเสร็จการสมัครสมาชิก <i class="fa fa-caret-down"
+                                                style="color:#777777;"></i>
+                                            @if ($errors->has('bill'))
+                                                <span class="text-danger"
+                                                    style="font-size: 15px;">({{ $errors->first('bill') }})</span>
+                                            @endif
+                                        </p>
+                                        <input type="file" name="bill[]" class="form-control" accept=".jpg, .jpeg, .png"
+                                            multiple />
+                                    </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12 mt-3">

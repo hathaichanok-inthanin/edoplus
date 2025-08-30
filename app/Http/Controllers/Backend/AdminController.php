@@ -29,6 +29,7 @@ use App\Model\GetCoupon;
 use App\Model\PartnerShopPoint;
 use App\Model\Benefit;
 use App\Model\InvitationBalance;
+use App\Model\BillConfirm;
 
 use Carbon\Carbon;
 use Validator;
@@ -797,6 +798,26 @@ class AdminController extends Controller
             $member = Member::findOrFail($id);
             $member->invitation = $request->get('invitation');
             $member->update($request->all());
+
+            if($request->hasFile('bill')) {
+                $bill_confirm = new BillConfirm;
+                $bill_confirm->member_id = $request->get('id');
+                $bill_confirm->date = Carbon::now()->format('d/m/Y');
+
+                if($request->hasFile('bill')) {
+                    $files = $request->file('bill');
+                    $file_names = [];
+
+                    foreach ($files as $file) {
+                        $filename = md5($file->getClientOriginalName() . time()) . "_o." . $file->getClientOriginalExtension();
+                        $file->move('files/bill_confirm/', $filename);
+                        $file_names[] = $filename;
+                    }
+                    $bill_confirm->bill = json_encode($file_names);
+                }
+
+                $bill_confirm->save();
+            }
 
             $request->session()->flash('alert-success', 'แก้ไขโปรไฟล์สมาชิกสำเร็จ');
             return redirect()->action('Backend\AdminController@memberProfile',['id' => $id]);
