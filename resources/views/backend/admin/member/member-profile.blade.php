@@ -210,6 +210,146 @@
                 </div>
             </div>
         </div>
+        {{-- ลูกค้ากลุ่มพิเศษ --}}
+    @elseif($member->status == 'SPECIAL MEMBER')
+        <div class="container-fluid py-4">
+            <div class="member-profile">
+                <div class="row">
+                    <div class="col-lg-5 mb-lg-0 mb-4">
+                        <a href="javascript:history.back();"><i class="ni ni-bold-left"></i> ย้อนกลับ</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-2"></div>
+                    <div class="col-lg-8 mt-4 mb-lg-0 mb-4">
+                        @foreach (['danger', 'warning', 'success', 'info'] as $msg)
+                            @if (Session::has('alert-' . $msg))
+                                <p class="alertdesign alert alert-{{ $msg }}">
+                                    {{ Session::get('alert-' . $msg) }}
+                                </p>
+                            @endif
+                        @endforeach
+                        <div class="card z-index-2">
+                            <div class="card-header pb-0 pt-3 bg-transparent">
+                                <div class="row mb-4">
+                                    <div class="col-md-12">
+                                        <a href="{{ url('editProfile') }}/{{ $member->id }}"><i class="ni ni-settings"
+                                                aria-hidden="true"></i> แก้ไขข้อมูล</a>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <center><img src="{{ url('assets/image/profile.png') }}" width="70%;"></center>
+                                    </div>
+                                    @php
+                                        // min_price, max_price ระดับสมาชิก
+                                        $min_price_silver = DB::table('tiers')
+                                            ->where('tier', 'SILVER')
+                                            ->value('min_price');
+                                        $max_price_silver = DB::table('tiers')
+                                            ->where('tier', 'SILVER')
+                                            ->value('max_price');
+                                        $min_price_gold = DB::table('tiers')->where('tier', 'GOLD')->value('min_price');
+                                        $max_price_gold = DB::table('tiers')->where('tier', 'GOLD')->value('max_price');
+                                        $min_price_black = DB::table('tiers')
+                                            ->where('tier', 'BLACK')
+                                            ->value('min_price');
+                                    @endphp
+                                    <div class="col-md-4" style="border-right: 2px dashed #9e9e9e;">
+
+                                        @if ($member->status == 'ONLINE')
+                                            <button class="btn btn-success btn-sm my-auto" style="color:#fff;">
+                                                {{ $member->status }}
+                                            </button>
+                                        @else
+                                            <button class="btn btn-danger btn-sm my-auto" style="color:#fff;">
+                                                {{ $member->status }}
+                                            </button>
+                                        @endif
+                                        <h5 class="mt-2">หมายเลขสมาชิก <i class="fa fa-caret-down"
+                                                style="color:#777777;"></i><br>{{ $member->serialnumber }}</h5>
+                                        <h5 class="mt-2">หมายเลขบัตรประชาชน <i class="fa fa-caret-down"
+                                                style="color:#777777;"></i>
+                                            <h5>
+                                                @if ($member->card_id == null)
+                                                    <a
+                                                        href="{{ url('editProfile') }}/{{ $member->id }}">ใส่หมายเลขบัตรประชาชน</a>
+                                                @else
+                                                    <h5>{{ $member->card_id }}</h5>
+                                                @endif
+
+                                                <h4>คุณ{{ $member->name }} {{ $member->surname }}</h4>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <h5 class="mb-1">เบอร์โทรศัพท์ <i class="fa fa-caret-right"
+                                                style="color:#777777;"></i> {{ $member->tel }}</h5>
+                                        <h5>วัน/เดือน/ปีเกิด <i class="fa fa-caret-right" style="color:#777777;"></i>
+                                            {{ $member->bday }}</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2"></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-2"></div>
+                    <div class="col-lg-8 mt-4 mb-lg-0 mb-4">
+                        <div class="card">
+                            <div class="card-header pb-0 pt-3 bg-transparent">
+                                <div class="table-responsive">
+                                    <table class="table align-items-center">
+                                        <thead class="thead-light">
+                                            <tr style="text-align: center;">
+                                                <th>ลำดับ</th>
+                                                <th>วันที่ใช้บริการ</th>
+                                                <th>สาขา</th>
+                                                <th>หมายเลขบิล</th>
+                                                <th>การจัดการ</th>
+                                                <th>จำนวนเงิน</th>
+                                                <th>หลักฐานการใช้บริการ</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="list">
+                                            @foreach ($specialmember_balances as $specialmember_balance => $value)
+                                                @php
+                                                    $store_name = DB::table('account_stores')     
+                                                        ->where('id', $value->branch_id)
+                                                        ->value('store_name');
+                                                    $branch = DB::table('account_stores')
+                                                        ->where('id', $value->branch_id)
+                                                        ->value('branch');
+                                                @endphp
+                                                <tr style="text-align:center;">
+                                                    <td>{{ $NUM_PAGE * ($page - 1) + $specialmember_balance + 1 }}</td>
+                                                    <td>{{ $value->service_date }}</td>
+                                                    <td>{{ $store_name }} {{ $branch }}</td>
+                                                    <td>{{ $value->bill_number }}</td>
+                                                    @if ($value->type == 'เพิ่มยอดเงิน')
+                                                        <td style="color: green;">{{ $value->type }}</td>
+                                                    @else
+                                                        <td style="color: red;">{{ $value->type }}</td>
+                                                    @endif
+                                                    <td>{{ number_format($value->balance) }}</td>
+                                                    <td>
+                                                        @if ($value->file != null)
+                                                            <a href="{{ url('specialmember-file-detail') }}/{{ $value->id }}"
+                                                                style="color:#0c6640;">
+                                                                <i class="fas fa-image" aria-hidden="true"></i>
+                                                            </a>
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2"></div>
+                </div>
+            </div>
+        </div>
         {{-- สมาชิกท่ั่วไป --}}
     @else
         <div class="container-fluid py-4">

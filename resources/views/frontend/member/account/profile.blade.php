@@ -91,6 +91,21 @@
     @php
         $point_balance = $sumpoint - $redeem_reward_point - $redeem_point_sum;
     @endphp
+
+    {{-- สมาชิกกลุ่มพิเศษ --}}
+    @php
+        $specialmember_balance = DB::table('specialmember_balances')
+            ->where('member_id', $member->id)
+            ->where('type', 'เพิ่มยอดเงิน')
+            ->sum('balance');
+        $specialmember_amount_spent = DB::table('specialmember_balances')
+            ->where('member_id', $member->id)
+            ->where('type', 'ยอดที่ใช้ไป')
+            ->sum('balance');
+        $total_specialmember_balance = $specialmember_balance - $specialmember_amount_spent;
+        $total_specialmember_balance = number_format($total_specialmember_balance);
+    @endphp
+
     {{-- สมาชิก invitation หน้าจอคอม --}}
     @if (Auth::guard('member')->user()->invitation != null)
         <div class="container" id="desktop" style="margin-top: 10rem;">
@@ -152,6 +167,66 @@
             </div>
         </div>
         {{-- จบ สมาชิก invitation หน้าจอคอม --}}
+
+        {{-- สมาชิก specialmember หน้าจอคอม --}}
+    @elseif (Auth::guard('member')->user()->status == 'SPECIAL MEMBER')
+        <div class="container" id="desktop" style="margin-top: 10rem;">
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                    <div class="card z-index-2">
+                        <div class="card-header pb-0 pt-3 bg-transparent card-profile">
+                            <div class="row mb-4 mt-4">
+                                <div class="col-md-2">
+                                    <center><img src="{{ url('assets/image/profile.png') }}" width="100%;"></center>
+                                </div>
+                                @php
+                                    $member_new = count(
+                                        DB::table('members')
+                                            ->where('id', $member->id)
+                                            ->where('created_at', '>', now()->subDays(30)->endOfDay())
+                                            ->get(),
+                                    );
+                                @endphp
+                                <div class="col-md-5" style="border-right: 2px dashed #9e9e9e;">
+
+                                    @if ($member->status == 'ONLINE')
+                                        <button class="btn btn-success btn-sm my-auto" style="color:#fff;">
+                                            {{ $member->status }}
+                                        </button>
+                                    @else
+                                        <button class="btn btn-danger btn-sm my-auto" style="color:#fff;">
+                                            {{ $member->status }}
+                                        </button>
+                                    @endif
+                                    @if ($member_new != 0)
+                                        <button class="btn btn-warning btn-sm my-auto"
+                                            style="color:#fff;">ลูกค้าใหม่</button>
+                                    @endif
+                                    <h5 class="mt-2">หมายเลขสมาชิก <i class="fa fa-caret-down"
+                                            style="color:#777777;"></i><br>{{ $member->serialnumber }}</h5>
+                                    <h4>คุณ{{ $member->name }} {{ $member->surname }}</h4>
+                                    <h5 class="mb-1">เบอร์โทรศัพท์ <i class="fa fa-caret-right"
+                                            style="color:#777777;"></i>
+                                        {{ $member->tel }}</h5>
+                                    <h5>วัน/เดือน/ปีเกิด <i class="fa fa-caret-right" style="color:#777777;"></i>
+                                        {{ $member->bday }}</h5>
+                                </div>
+                                <div class="col-md-5">
+                                    <h4 class="mb-1">ยอดเงินคงเหลือใน Wallet <i class="fa fa-caret-down"
+                                            style="color:#777777;"></i><br><span style="font-size:18px;"
+                                            class="btn btn-info btn-sm mt-3 text-gradient">{{ $total_specialmember_balance }}
+                                            บาท</span>
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2"></div>
+            </div>
+        </div>
+        {{-- จบ สมาชิก specialmember หน้าจอคอม --}}
     @else
         <div class="container" id="desktop" style="margin-top: 10rem;">
             <div class="row">
@@ -297,6 +372,73 @@
             </div>
         </div>
         {{-- จบ สมาชิก invitation หน้าจอมือถือ --}}
+
+        {{-- สมาชิก specialmember หน้าจอมือถือ --}}
+    @elseif (Auth::guard('member')->user()->status == 'SPECIAL MEMBER')
+        <div class="container" id="mobile" style="display:none;">
+            <div class="card z-index-2">
+                <div class="card-header pb-0 pt-3 bg-transparent card-profile">
+                    <div class="row mb-4 mt-4">
+
+                        <div class="col-md-12">
+                            <center><img src="{{ url('assets/image/profile.png') }}" width="40%;"></center>
+                        </div>
+                        @php
+                            $member_new = count(
+                                DB::table('members')
+                                    ->where('id', $member->id)
+                                    ->where('created_at', '>', now()->subDays(30)->endOfDay())
+                                    ->get(),
+                            );
+                        @endphp
+                        <div class="col-md-12">
+                            <div class="d-flex align-items-center justify-content-center" style="gap: 10px;">
+                                @if ($member->status == 'ONLINE')
+                                    <button class="btn btn-success btn-sm my-auto"
+                                        style="color:#fff; margin-top:10px;">{{ $member->status }}</button>
+                                @else
+                                    <button class="btn btn-danger btn-sm my-auto"
+                                        style="color:#fff;">{{ $member->status }}</button>
+                                @endif
+
+                                @if ($member_new != 0)
+                                    <button class="btn btn-warning btn-sm my-auto" style="color:#fff;">ลูกค้าใหม่</button>
+                                @endif
+                            </div>
+                            <div class="container" style="text-align: center;">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h5 class="mt-2">หมายเลขสมาชิก <i class="fa fa-caret-down"
+                                                style="color:#777777;"></i><br>{{ $member->serialnumber }}</h5>
+                                        <h3>คุณ{{ $member->name }} {{ $member->surname }}</h3>
+                                        <h5 class="mb-1">เบอร์โทรศัพท์ <i class="fa fa-caret-right"
+                                                style="color:#777777;"></i> {{ $member->tel }}</h5>
+                                        <h5>วัน/เดือน/ปีเกิด <i class="fa fa-caret-right" style="color:#777777;"></i>
+                                            {{ $member->bday }}</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="border-top: 2px dashed #9e9e9e;"></div>
+                        <div class="col-md-5 mt-3">
+                            <div class="container" style="text-align: center;">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h4 class="mb-1">ยอดเงินคงเหลือใน Wallet <i class="fa fa-caret-down"
+                                                style="color:#777777;"></i><br><span style="font-size:22px;"
+                                                class="btn btn-info btn-sm mt-3 text-gradient">{{ $total_specialmember_balance }}
+                                                บาท</span>
+                                        </h4>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{-- จบ สมาชิก specialmember หน้าจอมือถือ --}}
     @else
         <div class="container" id="mobile" style="display:none;">
             <div class="card z-index-2">
@@ -473,6 +615,78 @@
                                                 <td>
                                                     @if ($value->file != null)
                                                         <a href="{{ url('member/invitation-file-detail') }}/{{ $value->id }}"
+                                                            style="color:#0c6640;">
+                                                            <i class="fas fa-image" aria-hidden="true"></i>
+                                                        </a>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2"></div>
+            </div>
+        </div>
+    @elseif (Auth::guard('member')->user()->status == 'SPECIAL MEMBER')
+        <div class="container" style="text-align: center; margin-bottom:10rem;">
+            <div class="row">
+                <div class="col-lg-2"></div>
+                <div class="col-lg-8 mt-4 mb-lg-0 mb-4">
+                    <div class="card">
+                        <div class="card-header pb-0 pt-3 bg-transparent">
+                            <div class="table-responsive">
+                                <table class="table align-items-center">
+                                    <thead class="thead-light">
+                                        <tr style="text-align: center;">
+                                            <th>ลำดับ</th>
+                                            <th>วันที่ใช้บริการ</th>
+                                            <th>สาขา</th>
+                                            <th>การจัดการ</th>
+                                            <th>จำนวนเงิน</th>
+                                            <th>หลักฐานการใช้บริการ</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="list">
+                                        @foreach ($specialmember_balances as $specialmember_balance => $value)
+                                            @php
+                                                // store_id
+                                                $store_name = DB::table('account_stores')
+                                                    ->where('id', $value->branch_id)
+                                                    ->value('store_name');
+                                                $branch = DB::table('account_stores')
+                                                    ->where('id', $value->branch_id)
+                                                    ->value('branch');
+                                            @endphp
+                                            <tr style="text-align:center;">
+                                                <td>{{ $NUM_PAGE * ($page - 1) + $specialmember_balance + 1 }}</td>
+                                                @if ($value->service_date == null)
+                                                    <td>{{ $value->date }}</td>
+                                                @else
+                                                    @php
+                                                        $timestamp = strtotime($value->service_date);
+                                                        $service_date = date('d/m/Y', $timestamp);
+                                                    @endphp
+                                                    <td>{{ $service_date }}</td>
+                                                @endif
+
+                                                @if ($value->branch_id != null)
+                                                    <td>{{ $store_name }} สาขา{{ $branch }}</td>
+                                                @else
+                                                    <td></td>
+                                                @endif
+                                                @if ($value->type == 'เพิ่มยอดเงิน')
+                                                    <td style="color: green;">{{ $value->type }}</td>
+                                                @else
+                                                    <td style="color: red;">{{ $value->type }}</td>
+                                                @endif
+                                                <td>{{ number_format($value->balance) }}</td>
+                                                <td>
+                                                    @if ($value->file != null)
+                                                        <a href="{{ url('member/specialmember-file-detail') }}/{{ $value->id }}"
                                                             style="color:#0c6640;">
                                                             <i class="fas fa-image" aria-hidden="true"></i>
                                                         </a>

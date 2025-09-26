@@ -51,6 +51,7 @@ Route::group(['prefix' => 'member'], function(){
 
     Route::get('/profile','Frontend\MembersController@profile')->name('member.home');
     Route::get('/invitation-file-detail/{id}','Frontend\MembersController@invitationFileDetail'); //ดูรายละเอียดหลักฐานการใช้บริการ
+    Route::get('/specialmember-file-detail/{id}','Frontend\MembersController@specialmemberFileDetail');
 
     // แลกของรางวัล
     Route::get('/reward-redeem/{id}','Frontend\RewardsController@rewardRedeem');
@@ -213,6 +214,14 @@ Route::group(['prefix' => '/'], function(){
     Route::post('add-balance','Backend\AdminController@addBalancePost'); //เพิ่มยอดเงิน
     Route::post('delete-balance','Backend\AdminController@deleteBalancePost'); //ลบยอดเงิน
     Route::get('invitation-file-detail/{id}','Backend\AdminController@invitationFileDetail'); //ดูรายละเอียดหลักฐานการใช้บริการ
+
+    // ลูกค้ากลุ่มพิเศษ
+    Route::get('specialmember/member','Backend\AdminController@specialmemberMember');
+    Route::get('add-balance-specialmember/{id}','Backend\AdminController@addBalanceSpecialmember');
+    Route::post('add-balance-specialmember','Backend\AdminController@addBalanceSpecialmemberPost');
+    Route::get('delete-balance-specialmember/{id}','Backend\AdminController@deleteBalanceSpecialmember');
+    Route::post('delete-balance-specialmember','Backend\AdminController@deleteBalanceSpecialmemberPost');
+    Route::get('specialmember-file-detail/{id}','Backend\AdminController@specialmemberFileDetail');
 });
 
 // Admin ร้านค้า

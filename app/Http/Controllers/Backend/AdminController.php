@@ -29,6 +29,7 @@ use App\Model\GetCoupon;
 use App\Model\PartnerShopPoint;
 use App\Model\Benefit;
 use App\Model\InvitationBalance;
+use App\Model\SpecialmemberBalance;
 use App\Model\BillConfirm;
 
 use Carbon\Carbon;
@@ -415,13 +416,15 @@ class AdminController extends Controller
         $member = Member::findOrFail($id);
         $points = Point::where('member_id',$id)->paginate($NUM_PAGE);
         $balances = InvitationBalance::where('member_id',$id)->paginate($NUM_PAGE);
+        $specialmember_balances = SpecialmemberBalance::where('member_id',$id)->paginate($NUM_PAGE);
         $page = $request->input('page');
         $page = ($page != null)?$page:1;
         return view('backend/admin/member/member-profile')->with('NUM_PAGE',$NUM_PAGE)
                                                           ->with('page',$page)
                                                           ->with('member',$member)
                                                           ->with('points',$points)
-                                                          ->with('balances',$balances);
+                                                          ->with('balances',$balances)
+                                                          ->with('specialmember_balances',$specialmember_balances);
     }
 
     public function campaign(Request $request) {
@@ -1349,6 +1352,84 @@ class AdminController extends Controller
     public function invitationFileDetail($id) {
         $balance = InvitationBalance::findOrFail($id);
         return view('backend/admin/invitation/file-detail')->with('balance',$balance);
+    }
+
+    // ลูกค้ากลุ่มพิเศษ
+    public function specialmemberMember(Request $request) {
+        $NUM_PAGE = 20;
+        $members = Member::where('status','SPECIAL MEMBER')->paginate($NUM_PAGE);
+        $page = $request->input('page');
+        $page = ($page != null)?$page:1;
+        return view('backend/admin/specialmember/member')->with('NUM_PAGE',$NUM_PAGE)
+                                                         ->with('page',$page)
+                                                         ->with('members',$members);
+    }
+
+    public function addBalanceSpecialmember($id) {
+        return view('backend/admin/specialmember/add-balance')->with('member_id',$id);
+    }
+
+    public function addBalanceSpecialmemberPost(Request $request) {
+        $validator = Validator::make($request->all(), $this->rules_addBalance(), $this->messages_addBalance());
+        if($validator->passes()) {
+            $specialmember_balance = new SpecialmemberBalance;
+            $specialmember_balance->member_id = $request->get('member_id');
+            $specialmember_balance->admin_id = $request->get('admin_id');
+            $specialmember_balance->type = $request->get('type');
+            $specialmember_balance->balance = $request->get('balance');
+            $specialmember_balance->date = Carbon::now()->format('d/m/Y');
+            $specialmember_balance->save();
+            $request->session()->flash('alert-success','เพิ่มยอดเงินสำเร็จ');
+            return redirect()->action('Backend\AdminController@specialmemberMember');
+
+        } else{
+            $request->session()->flash('alert-danger', 'เพิ่มยอดเงินไม่สำเร็จ กรุณาตรวจสอบข้อมูลอีกครั้ง !!');
+            return back()->withErrors($validator)->withInput();   
+        }
+    }
+
+    public function deletebalanceSpecialmember($id) {
+        return view('backend/admin/specialmember/delete-balance')->with('member_id',$id);
+    }
+
+    public function deleteBalanceSpecialmemberPost(Request $request) {
+        $validator = Validator::make($request->all(), $this->rules_deteleBalance(), $this->messages_deteleBalance());
+        if($validator->passes()) {
+            $specialmember_balance = new SpecialmemberBalance;
+            $specialmember_balance->branch_id = $request->get('branch_id');
+            $specialmember_balance->member_id = $request->get('member_id');
+            $specialmember_balance->admin_id = $request->get('admin_id');
+            $specialmember_balance->type = $request->get('type');
+            $specialmember_balance->balance = $request->get('balance');
+            $specialmember_balance->bill_number = $request->get('bill_number');
+            $specialmember_balance->date = Carbon::now()->format('d/m/Y');
+            $specialmember_balance->service_date = $request->get('service_date');
+            
+            if($request->hasFile('file')) {
+                $files = $request->file('file');
+                $file_names = [];
+
+                foreach ($files as $file) {
+                    $filename = md5($file->getClientOriginalName() . time()) . "_o." . $file->getClientOriginalExtension();
+                    $file->move('files/bill/', $filename);
+                    $file_names[] = $filename;
+                }
+                $specialmember_balance->file = json_encode($file_names);
+            }
+
+            $specialmember_balance->save();
+            $request->session()->flash('alert-success','ปรับลดยอดเงินสำเร็จ');
+            return redirect()->action('Backend\AdminController@specialmemberMember');
+
+        } else{
+            $request->session()->flash('alert-danger', 'ปรับลดยอดเงินไม่สำเร็จ กรุณาตรวจสอบข้อมูลอีกครั้ง !!');
+            return back()->withErrors($validator)->withInput();   
+        }
+    }
+
+    public function specialmemberFileDetail($id) {
+        $balance = SpecialmemberBalance::findOrFail($id);
+        return view('backend/admin/specialmember/file-detail')->with('balance',$balance);
     }
 
     public function rules_deteleBalance() {

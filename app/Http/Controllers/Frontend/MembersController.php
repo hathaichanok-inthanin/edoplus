@@ -11,6 +11,7 @@ use App\Model\GetCoupon;
 use App\Model\Point;
 use App\Model\RedeemPoint;
 use App\Model\InvitationBalance;
+use App\Model\SpecialmemberBalance;
 use App\PartnerShop;
 use Auth;
 use Validator;
@@ -43,6 +44,7 @@ class MembersController extends Controller
         // ประวัติการใช้บริการ
         $NUM_PAGE = 20;
         $balances = InvitationBalance::where('member_id',$member_id)->paginate($NUM_PAGE);
+        $specialmember_balances = SpecialmemberBalance::where('member_id',$member_id)->paginate($NUM_PAGE);
         $page = $request->input('page');
         $page = ($page != null)?$page:1;
 
@@ -52,6 +54,7 @@ class MembersController extends Controller
                                                       ->with('points',$points)
                                                       ->with('redeem_points',$redeem_points)
                                                       ->with('balances',$balances)
+                                                      ->with('specialmember_balances',$specialmember_balances)
                                                       ->with('NUM_PAGE',$NUM_PAGE)
                                                       ->with('page',$page);
     }
@@ -97,6 +100,11 @@ class MembersController extends Controller
 
     public function invitationFileDetail($id) {
         $balance = InvitationBalance::findOrFail($id);
+        return view('frontend/member/account/file-detail')->with('balance',$balance);
+    }
+
+    public function specialmemberFileDetail($id) {
+        $balance = SpecialmemberBalance::findOrFail($id);
         return view('frontend/member/account/file-detail')->with('balance',$balance);
     }
 

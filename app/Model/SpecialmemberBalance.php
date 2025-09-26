@@ -4,9 +4,9 @@ namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
 
-class InvitationBalance extends Model
+class SpecialmemberBalance extends Model
 {
-	protected $table = 'invitation_balances';
+	protected $table = 'specialmember_balances';
 
 	protected $fillable = [
     	'branch_id', 'admin_id', 'staff_id', 'store_id', 'member_id', 'bill_number', 'type', 'balance', 'date', 'service_date', 'file'

@@ -139,6 +139,7 @@
                                             <option value="{{ $member->status }}">{{ $member->status }}</option>
                                             <option value="ONLINE">ONLINE</option>
                                             <option value="OFFLINE">OFFLINE</option>
+                                            <option value="SPECIAL MEMBER">SPECIAL MEMBER</option>
                                         </select>
                                     </div>
                                     <div class="col-md-6 mt-2">
