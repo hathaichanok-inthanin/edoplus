@@ -39,42 +39,44 @@
                     </span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse"
-                    href="#invitation" role="button" aria-expanded="false" aria-controls="invitation">
-                    <span>
-                        <i class="fas fa-hand-holding-heart me-2"></i> Edo Invitation Only
-                    </span>
-                </a>
-                <div class="collapse" id="invitation">
-                    <ul class="nav flex-column ms-3">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url('/invitation/member') }}"><i
-                                    class="fas fa-user me-2"></i>ข้อมูลสมาชิก</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url('/invitation/manage-balance') }}"><i
-                                    class="fas fa-coins me-2"></i>จัดการยอดเงิน</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse"
-                    href="#specialmember" role="button" aria-expanded="false" aria-controls="specialmember">
-                    <span>
-                        <i class="fas fa-user-tie me-2"></i> ลูกค้ากลุ่มพิเศษ
-                    </span>
-                </a>
-                <div class="collapse" id="specialmember">
-                    <ul class="nav flex-column ms-3">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url('/specialmember/member') }}"><i
-                                    class="fas fa-user me-2"></i>ข้อมูลสมาชิก</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
+            @if(Auth::guard('admin')->user()->role == "ผู้ดูแลระบบหลัก")
+                <li class="nav-item">
+                    <a class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse"
+                        href="#invitation" role="button" aria-expanded="false" aria-controls="invitation">
+                        <span>
+                            <i class="fas fa-hand-holding-heart me-2"></i> Edo Invitation Only
+                        </span>
+                    </a>
+                    <div class="collapse" id="invitation">
+                        <ul class="nav flex-column ms-3">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url('/invitation/member') }}"><i
+                                        class="fas fa-user me-2"></i>ข้อมูลสมาชิก</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url('/invitation/manage-balance') }}"><i
+                                        class="fas fa-coins me-2"></i>จัดการยอดเงิน</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse"
+                        href="#specialmember" role="button" aria-expanded="false" aria-controls="specialmember">
+                        <span>
+                            <i class="fas fa-user-tie me-2"></i> ลูกค้ากลุ่มพิเศษ
+                        </span>
+                    </a>
+                    <div class="collapse" id="specialmember">
+                        <ul class="nav flex-column ms-3">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url('/specialmember/member') }}"><i
+                                        class="fas fa-user me-2"></i>ข้อมูลสมาชิก</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            @endif
             <li class="nav-item hr">
                 <a class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse"
                     href="#privilege" role="button" aria-expanded="false" aria-controls="privilege">
@@ -93,7 +95,8 @@
                                     class="fas fa-ticket-alt me-2"></i>คูปอง</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url('/reward') }}"><i class="fa fa-gift me-2"></i>ของรางวัล</a>
+                            <a class="nav-link" href="{{ url('/reward') }}"><i
+                                    class="fa fa-gift me-2"></i>ของรางวัล</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url('/partner') }}"><i

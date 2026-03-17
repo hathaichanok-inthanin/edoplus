@@ -13,6 +13,7 @@ use App\Model\Campaign;
 use App\Model\GetCoupon;
 use App\Model\InvitationBalance;
 use App\Model\BillConfirm;
+use App\Model\SpecialmemberBalance;
 
 use Carbon\Carbon;
 use Auth;
@@ -54,12 +55,14 @@ class AdminStoreController extends Controller
         $NUM_PAGE = 20;
         $member = Member::findOrFail($id);
         $points = Point::where('member_id',$id)->paginate($NUM_PAGE);
+        $specialmember_balances = SpecialmemberBalance::where('member_id',$id)->paginate($NUM_PAGE);
         $page = $request->input('page');
         $page = ($page != null)?$page:1;
         return view('backend/adminStore/member/member-profile')->with('NUM_PAGE',$NUM_PAGE)
                                                                ->with('page',$page)
                                                                ->with('member',$member)
-                                                               ->with('points',$points);
+                                                               ->with('points',$points)
+                                                               ->with('specialmember_balances',$specialmember_balances);
     }
 
     public function addpoint(Request $request) {
@@ -295,6 +298,22 @@ class AdminStoreController extends Controller
             $request->session()->flash('alert-danger', 'แก้ไขโปรไฟล์สมาชิกไม่สำเร็จ กรุณาตรวจสอบข้อมูลอีกครั้ง');
             return redirect()->action('Backend\AdminStoreController@editProfile',['id' => $request->get('id')])->withErrors($validator)->withInput();   
         }
+    }
+
+    // ลูกค้ากลุ่มพิเศษ
+    public function specialmemberMember(Request $request) {
+        $NUM_PAGE = 20;
+        $members = Member::where('status','SPECIAL MEMBER')->paginate($NUM_PAGE);
+        $page = $request->input('page');
+        $page = ($page != null)?$page:1;
+        return view('backend/adminStore/specialmember/member')->with('NUM_PAGE',$NUM_PAGE)
+                                                              ->with('page',$page)
+                                                              ->with('members',$members);
+    }
+
+    public function specialmemberFileDetail($id) {
+        $balance = SpecialmemberBalance::findOrFail($id);
+        return view('backend/adminStore/specialmember/file-detail')->with('balance',$balance);
     }
 
     public function rules_deteleBalance() {

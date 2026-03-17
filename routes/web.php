@@ -261,6 +261,10 @@ Route::group(['prefix' => 'admin'], function(){
     Route::get('search-invitation','Backend\AdminStoreController@searchInvitation');
     Route::post('delete-balance','Backend\AdminStoreController@deleteBalancePost'); //ลบยอดเงิน
     Route::get('invitation-file-detail/{id}','Backend\AdminStoreController@invitationFileDetail'); //ดูรายละเอียดหลักฐานการใช้บริการ
+
+    // ลูกค้ากลุ่มพิเศษ
+    Route::get('specialmember/member','Backend\AdminStoreController@specialmemberMember');
+    Route::get('specialmember-file-detail/{id}','Backend\AdminStoreController@specialmemberFileDetail');
 });
 
 // Staff พนักงาน
@@ -297,6 +301,10 @@ Route::group(['prefix' => 'staff'], function(){
     Route::get('search-invitation','Backend\StaffController@searchInvitation');
     Route::post('delete-balance','Backend\StaffController@deleteBalancePost'); //ลบยอดเงิน
     Route::get('invitation-file-detail/{id}','Backend\StaffController@invitationFileDetail'); //ดูรายละเอียดหลักฐานการใช้บริการ
+
+    // ลูกค้ากลุ่มพิเศษ
+    Route::get('specialmember/member','Backend\StaffController@specialmemberMember');
+    Route::get('specialmember-file-detail/{id}','Backend\StaffController@specialmemberFileDetail');
 });
 
 

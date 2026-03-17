@@ -10,6 +10,7 @@ use App\Model\Point;
 use App\Model\Campaign;
 use App\Model\GetCoupon;
 use App\Model\InvitationBalance;
+use App\Model\SpecialmemberBalance;
 
 use Validator;
 use Carbon\Carbon;
@@ -47,8 +48,15 @@ class StaffController extends Controller
     }
 
     public function memberProfile(Request $request, $id) {
+        $NUM_PAGE = 20;
         $member = Member::findOrFail($id);
-        return view('backend/staff/member/member-profile')->with('member',$member);
+        $specialmember_balances = SpecialmemberBalance::where('member_id',$id)->paginate($NUM_PAGE);
+        $page = $request->input('page');
+        $page = ($page != null)?$page:1;
+        return view('backend/staff/member/member-profile')->with('NUM_PAGE',$NUM_PAGE)
+                                                          ->with('page',$page)
+                                                          ->with('member',$member)
+                                                          ->with('specialmember_balances',$specialmember_balances);
     }
 
     public function addpoint(Request $request) {
@@ -258,6 +266,22 @@ class StaffController extends Controller
     public function invitationFileDetail($id) {
         $balance = InvitationBalance::findOrFail($id);
         return view('backend/staff/invitation/file-detail')->with('balance',$balance);
+    }
+
+    // ลูกค้ากลุ่มพิเศษ
+    public function specialmemberMember(Request $request) {
+        $NUM_PAGE = 20;
+        $members = Member::where('status','SPECIAL MEMBER')->paginate($NUM_PAGE);
+        $page = $request->input('page');
+        $page = ($page != null)?$page:1;
+        return view('backend/staff/specialmember/member')->with('NUM_PAGE',$NUM_PAGE)
+                                                              ->with('page',$page)
+                                                              ->with('members',$members);
+    }
+
+    public function specialmemberFileDetail($id) {
+        $balance = SpecialmemberBalance::findOrFail($id);
+        return view('backend/staff/specialmember/file-detail')->with('balance',$balance);
     }
 
     public function rules_deteleBalance() {

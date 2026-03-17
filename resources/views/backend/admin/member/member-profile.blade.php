@@ -154,6 +154,7 @@
                 <div class="row">
                     <div class="col-lg-2"></div>
                     <div class="col-lg-8 mt-4 mb-lg-0 mb-4">
+                        {!! $balances->links() !!}
                         <div class="card">
                             <div class="card-header pb-0 pt-3 bg-transparent">
                                 <div class="table-responsive">

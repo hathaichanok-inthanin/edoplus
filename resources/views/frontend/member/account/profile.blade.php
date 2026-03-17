@@ -57,6 +57,7 @@
         } elseif ($member->invitation == 'วงเงิน 5,000,000') {
             $balance = 0.2 * $balance + $balance; // members get an additional 20%
         }
+        $balance_format = number_format($balance);
         $amount_spent = DB::table('invitation_balances')
             ->where('member_id', $member->id)
             ->where('type', 'ยอดที่ใช้ไป')
@@ -153,6 +154,7 @@
                                 <div class="col-md-5">
                                     <h4 style="font-size: 20px;" class="text-gradient">Edo Invitation Only</h4>
                                     <h4 style="font-size: 20px;">{{ $member->invitation }} บาท</h4>
+                                    <h4 style="font-size: 20px;">วงเงินทั้งหมด {{ $balance_format }} บาท</h4>
                                     <h4 class="mb-1">ยอดเงินคงเหลือใน Wallet <i class="fa fa-caret-down"
                                             style="color:#777777;"></i><br><span style="font-size:18px;"
                                             class="btn btn-info btn-sm mt-3 text-gradient">{{ $total_balance }} บาท</span>
@@ -357,6 +359,7 @@
                                     <div class="col-md-12">
                                         <h4 style="font-size: 20px;" class="text-gradient">Edo Invitation Only</h4>
                                         <h4 style="font-size: 20px;">{{ $member->invitation }} บาท</h4>
+                                        <h4 style="font-size: 20px;">วงเงินทั้งหมด {{ $balance_format }} บาท</h4>
                                         <h4 class="mb-1">ยอดเงินคงเหลือใน Wallet <i class="fa fa-caret-down"
                                                 style="color:#777777;"></i><br><span style="font-size:22px;"
                                                 class="btn btn-info btn-sm mt-3 text-gradient">{{ $total_balance }}
@@ -573,6 +576,7 @@
             <div class="row">
                 <div class="col-lg-2"></div>
                 <div class="col-lg-8 mt-4 mb-lg-0 mb-4">
+                    {!! $balances->links() !!}
                     <div class="card">
                         <div class="card-header pb-0 pt-3 bg-transparent">
                             <div class="table-responsive">
@@ -636,6 +640,7 @@
             <div class="row">
                 <div class="col-lg-2"></div>
                 <div class="col-lg-8 mt-4 mb-lg-0 mb-4">
+                    {!! $specialmember_balances->links() !!}
                     <div class="card">
                         <div class="card-header pb-0 pt-3 bg-transparent">
                             <div class="table-responsive">
