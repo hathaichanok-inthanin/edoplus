@@ -24,6 +24,18 @@ EdoPlus พัฒนาขึ้นเพื่อเป็นเครื่อ
 * **Transactional Integrity:** จัดการระบบแต้มและคูปองด้วย Database Transactions เพื่อให้มั่นใจว่าการเพิ่ม/ลดคะแนนมีความถูกต้อง 100% แม้มีการใช้งานพร้อมกันหลายสาขา
 
 ## Project Preview
+* ** เข้าสู่ระบบสำหรับสมาชิก
+<img width="150" height="150" alt="image" src="https://github.com/user-attachments/assets/f1cb4e77-a6e0-450a-be99-74770d545d7a" />
+<img width="150" height="150" alt="image" src="https://github.com/user-attachments/assets/3e20d2c7-6100-4004-b655-fb19261437ef" />
+
+* ** เข้าสู่ระบบสำหรับผู้ดูแลระบบ
+<img width="150" height="150" alt="image" src="https://github.com/user-attachments/assets/1f2ed374-8486-40b6-91ec-5a39490a2647" />
+<img width="150" height="150" alt="image" src="https://github.com/user-attachments/assets/7a7d4c3a-62df-4ab2-b36b-1f6a9a0d4f35" />
+<img width="150" height="150" alt="image" src="https://github.com/user-attachments/assets/259a4c6e-a880-49a9-ba71-1914c04c24ba" />
+
+
+
+
 
 **Live Website:** [www.edoplus.com](https://www.edoplus.com)
 ---
